@@ -64,7 +64,7 @@ def encode_review(word_list):
 
 model = keras.models.load_model("model.h5")
 
-with open("Reviews/fmab.txt", encoding="utf-8") as myfile:
+with open("fmab.txt", encoding="utf-8") as myfile:
     review = []
     for line in myfile.readlines():
         review.extend(line.replace(",", "").replace("'", "").replace(".", "").replace("(", "").replace(")", "").replace("\"", "").strip().split(" "))
