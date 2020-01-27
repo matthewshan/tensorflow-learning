@@ -46,7 +46,6 @@ for e in range(episodes):
     ep_score = 0
     done = False
     while not done:
-        env.render()
         s = s.reshape([1, 4])
         with tf.GradientTape() as tape:
             #Forward pass
@@ -68,7 +67,7 @@ for e in range(episodes):
     ep_memory = np.array(ep_memory)
     ep_memory[:,1] = discount_rewards(ep_memory[:,1])
 
-    for grad, reward in ep_memory:
+    for grads, reward in ep_memory:
         for i, grad in enumerate(grads):
             gradBuffer[i] += grad * reward
 
@@ -78,4 +77,5 @@ for e in range(episodes):
             gradBuffer[i] = grad * 0
     
     if e % 100 == 0:
+        #env.render()
         print("Episode  {}  Score  {}".format(e, np.mean(scores[-100:])))
