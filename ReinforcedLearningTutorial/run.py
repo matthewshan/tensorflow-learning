@@ -6,6 +6,7 @@ import gym
 #Based on the following article: 
 #https://medium.com/@hamza.emra/reinforcement-learning-with-tensorflow-2-0-cca33fead626
 
+
 def discount_rewards(r, gamma = 0.8):
     discounted_r = np.zeros_like(r) #NP: Return an array of zeros with the same shape and type as a given array.
     running_add = 0
@@ -40,23 +41,29 @@ update_every = 5
 
 for e in range(episodes):
     # reset the enviroment
-    s = env.reset()
+    # Observation array
+    # 0 - Cart Position
+    # 1 - Cart Velocity
+    # 2 - Pole Angle
+    # 3 - Pole Velocity At Tip
+    observation = env.reset()
     
     ep_memory = []
     ep_score = 0
     done = False
     while not done:
-        s = s.reshape([1, 4])
+        observation = observation.reshape([1, 4])
         with tf.GradientTape() as tape:
-            #Forward pass
-            logits = model(s)
+            # Forward pass
+            # Output 
+            logits = model(observation) # Passes the observation data in to the model?
             a_dist = logits.numpy()
             #Choose random action with p = action dist
             action = np.random.choice(a_dist[0], p=a_dist[0])
             action = np.argmax(a_dist == action)
             loss = compute_loss([action], logits)
         # Make the choosen action
-        s, reward, done, _ = env.step(action)
+        observation, reward, done, _ = env.step(action)
         ep_score += reward
         if done:
             reward -= 10
