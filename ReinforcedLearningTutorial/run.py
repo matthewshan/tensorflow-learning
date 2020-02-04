@@ -87,3 +87,6 @@ for e in range(episodes):
     if e % 100 == 0:
         #env.render()
         print("Episode  {}  Score  {}".format(e, np.mean(scores[-100:])))
+
+# Save the model when everything is done
+model.save("carpole.h5")
