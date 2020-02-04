@@ -57,10 +57,11 @@ for e in range(episodes):
             # Forward pass
             # Output 
             logits = model(observation) # Passes the observation data in to the model?
-            a_dist = logits.numpy()
-            #Choose random action with p = action dist
-            action = np.random.choice(a_dist[0], p=a_dist[0])
-            action = np.argmax(a_dist == action)
+            a_dist = logits.numpy() # converts the output tensor (probability vector) to a numpy array
+            
+            action = np.random.choice(a_dist[0], p=a_dist[0]) #Returns an index where the chances of picking an element corresponds with its value
+            temp = a_dist == action #Makes an array of booleans. The choosen action becomes True, and the other elements False
+            action = np.argmax(temp) #Grabs the indice of the first occurance of the value True
             loss = compute_loss([action], logits)
         # Make the choosen action
         observation, reward, done, _ = env.step(action)
